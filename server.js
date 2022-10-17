@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const path = require('path');
 const cors = require('cors');
+const corsOptions = require('./config/corsOptions')
 const { logger } = require('./middleware/logEvents');
 const errorHandler = require('./middleware/errorHandler');
 const PORT = process.env.PORT || 3500;
@@ -10,19 +11,7 @@ const PORT = process.env.PORT || 3500;
 //app.use is used to add middleware in the server
 app.use(logger);
 
-//cross origin resource sharing
-//127.0.0.1 == localhost
-const whitelist =['https://www.yoursite.com', 'http://127.0.0.1:5500', 'http://localhost:3500'] //whatever webapp that we want to give access to to this as backend
-const corsOptions ={
-    origin: (origin, callback) => {
-        if(whitelist.indexOf(origin) != -1 || !origin){
-            callback(null, true)
-        } else{
-            callback(new Error('Not allowed by CORS'))
-        }
-    },
-    optionsSuccessStatus: 200
-}
+
 app.use(cors(corsOptions));
 //app.use(cors());//it is open to public api
 
@@ -35,14 +24,15 @@ app.use(express.json());
 
 //serve static file
 app.use(express.static(path.join(__dirname, '/public')));
-app.use('./subdir', express.static(path.join(__dirname, '/public')));//gives access to /subdir of the files in public
 
 //routes to different views not in subdirectory
 app.use('/', require('./routes/root'));
-//this will route any request coming to subdir to routes
-app.use('/subdir', require('./routes/subdir'));
 //for restapi
 app.use('/employees', require('./routes/api/employees'));
+//registeration of new user
+app.use('/register', require('./routes/api/register'));
+//Auth of user
+app.use('/auth', require('./routes/api/auth'));
 
 //app.all accepts all http requests
 app.all('*', (req,res)=>{
