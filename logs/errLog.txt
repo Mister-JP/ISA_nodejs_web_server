@@ -1,0 +1,2 @@
+20221017	08:55:01	92e44676-fc15-45b4-b2e7-9b74fdf00c11	Error: Not allowed by CORS
+20221017	09:41:03	153cf377-99ae-4571-a8d5-dcc0d3914925	SyntaxError: Unexpected token j in JSON at position 14
