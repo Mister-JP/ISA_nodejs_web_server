@@ -5,13 +5,20 @@ const cors = require('cors');
 const corsOptions = require('./config/corsOptions')
 const { logger } = require('./middleware/logEvents');
 const errorHandler = require('./middleware/errorHandler');
+const verifyJWT = require('./middleware/verifyJWT');
+const cookieParser = require('cookie-parser');
+const credentials = require('./middleware/credentials');
 const PORT = process.env.PORT || 3500;
 
 // custom middle ware logger
 //app.use is used to add middleware in the server
 app.use(logger);
 
+//Handle options credentials check -before CORS!
+// and fetch cookies credentials requirement
+app.use(credentials);
 
+//cross origin resources sahring
 app.use(cors(corsOptions));
 //app.use(cors());//it is open to public api
 
@@ -22,17 +29,30 @@ app.use(express.urlencoded({extended: false}));
 //built-in middleware for json
 app.use(express.json());
 
+//middleware for cookies
+app.use(cookieParser());
+
+
 //serve static file
 app.use(express.static(path.join(__dirname, '/public')));
 
 //routes to different views not in subdirectory
 app.use('/', require('./routes/root'));
-//for restapi
-app.use('/employees', require('./routes/api/employees'));
 //registeration of new user
 app.use('/register', require('./routes/api/register'));
 //Auth of user
 app.use('/auth', require('./routes/api/auth'));
+//refresh token gets jwt in cookie and genrates accesstoken
+app.use('/refresh', require('./routes/api/refresh'));
+//logout
+app.use('/logout', require('./routes/api/logout'));
+
+
+//adding auth
+app.use(verifyJWT);
+//for restapi
+app.use('/employees', require('./routes/api/employees'));
+
 
 //app.all accepts all http requests
 app.all('*', (req,res)=>{

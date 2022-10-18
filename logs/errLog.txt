@@ -1,2 +1,6 @@
 20221017	08:55:01	92e44676-fc15-45b4-b2e7-9b74fdf00c11	Error: Not allowed by CORS
 20221017	09:41:03	153cf377-99ae-4571-a8d5-dcc0d3914925	SyntaxError: Unexpected token j in JSON at position 14
+20221017	16:54:35	3d507e55-ccb3-488a-a5d6-a5788c811e1b	TypeError: Cannot read properties of undefined (reading 'username')
+20221017	16:55:07	cf04ca2b-a5bd-4220-926a-2fbb6c80d618	TypeError: Cannot read properties of undefined (reading 'username')
+20221018	11:36:07	a19d067f-038e-4d4f-836b-27d562805ae6	TypeError: rolesArray.include is not a function
+20221018	11:40:17	36fbf61c-a718-41b0-a904-b32bd0eb159d	TypeError: Cannot read properties of undefined (reading 'filter')

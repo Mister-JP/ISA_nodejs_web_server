@@ -40,7 +40,7 @@ const deleteEmployee = (req,res)=>{
     if(!employee){
         return res.status(400).json({"message": `Employee ID ${req.body.id} not found`});
     }
-    const filteredArray = data.employee.filter(emp => emp.id !== parseInt(req.body.id));
+    const filteredArray = data.employees.filter(emp => emp.id !== parseInt(req.body.id));
     data.setEmployees([...filteredArray])
     res.json(data.employees)
 }
