@@ -1,11 +1,5 @@
-const usersDB = {
-    users: require('../model/users.json'),
-    setUsers: function(data){
-        this.users = data
-    }
-}
+const User = require('../model/User');
 
-const fsPromises = require('fs').promises;
 const path = require('path');
 
 
@@ -17,7 +11,7 @@ const handleLogout = async (req,res) => {
 
     //is refresh token in db?
     const refreshToken = cookies.jwt;
-    const foundUser = usersDB.users.find((person) => person.refreshToken === refreshToken);
+    const foundUser = await User.findOne({ refreshToken }).exec();
     
     if(!foundUser) {
         //if we found a user without that refreshToken
@@ -27,14 +21,9 @@ const handleLogout = async (req,res) => {
     }
 
     //Delete refresh token in db
-    const otherUsers = usersDB.users.filter(person => person.refreshToken !== foundUser.refreshToken);
-    const currentUser = {...foundUser, refreshToken:''};
-    usersDB.setUsers([...otherUsers, currentUser]);
-    await fsPromises.writeFile(
-        path.join(__dirname, '..', 'model', 'users.json'),
-        JSON.stringify(usersDB.users)
-
-    );
+    foundUser.refreshToken = '';
+    const result = await foundUser.save();
+    console.log(result);
 
     res.clearCookie('jwt', {httpOnly: true, sameSite: 'None', secure:true });
     //when we are on prod environment we also need to set secure flag as True
