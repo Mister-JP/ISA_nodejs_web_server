@@ -58,6 +58,8 @@ app.use('/logout', require('./routes/api/logout'));
 app.use(verifyJWT);
 //for restapi
 app.use('/employees', require('./routes/api/employees'));
+//for frontend
+app.use('/users', require('./routes/api/users'));
 
 
 //app.all accepts all http requests
