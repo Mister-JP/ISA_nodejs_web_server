@@ -54,11 +54,10 @@ app.use('/refresh', require('./routes/api/refresh'));
 //logout
 app.use('/logout', require('./routes/api/logout'));
 
-
-//adding auth
-app.use(verifyJWT);
 //for restapi
 app.use('/employees', require('./routes/api/employees'));
+//adding auth
+app.use(verifyJWT);
 //for frontend
 app.use('/users', require('./routes/api/users'));
 
